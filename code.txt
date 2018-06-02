@@ -1,0 +1,351 @@
+#include <stdio.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <math.h>
+
+#include <string.h>
+
+
+
+void bin_to_summation(int arr[],int size)	;
+
+void char_array_to_integer_array(char arr[]);
+
+char* binary_equiv(int );
+
+int sum_(int tmp[6]);
+
+
+
+int main() {
+
+	int i;
+
+	char *ch;
+
+	ch = malloc(sizeof(char)*100);
+
+	scanf("%s\n",ch);
+
+	getchar();
+
+	//char ch="0xAB65";
+
+	char ar1[16]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+
+	char *bit;              //character array containing bits of corresponding hex values
+
+	bit = malloc(sizeof(char)*5);  
+
+	
+
+	char *arr;
+
+	arr = malloc(sizeof(char)*5);
+
+	
+
+	
+
+ for(int j = 0; j<=15; j++)
+
+	         {
+
+	             if(ch[2]==ar1[j])
+
+	                   { 
+
+	                    
+
+	                     strcpy(arr,binary_equiv(j));
+
+	                    break;
+
+	                   }
+
+	         }  
+
+
+
+
+
+
+
+for(int i =3; i<strlen(ch); i++)        //this loop is for converting hex values for every 
+
+                                        //and getting its binary equivalent via  
+
+                                        //binary_equiv function   
+
+	   {
+
+	       for(int j = 0; j<=15; j++)
+
+	         {
+
+	             if(ch[i]==ar1[j])
+
+	                   { 
+
+	                                                              //i=j;
+
+	                    strcpy(bit,binary_equiv(j));
+
+	                    
+
+	                    strcat(arr,bit);
+
+	                    //printf("%s",bit);
+
+	                                                                  //printf("%s",arr);
+
+	                    
+
+						break;
+
+	                    }
+
+	       
+
+	         }
+
+	         
+
+	   }
+
+  char_array_to_integer_array(arr);  	    //at the end after all concatenation it converts 
+
+                                               // that character array to an integer array
+
+return 0;
+
+}
+
+
+
+void char_array_to_integer_array(char arr[])
+
+{
+
+    int int_arr[strlen(arr)];
+
+    for(int i =0;i<strlen(arr);i++)
+
+       {  if(arr[i]=='0')
+
+            int_arr[i] = 0;
+
+          if(arr[i]=='1')
+
+            int_arr[i] = 1;
+
+        
+
+           printf("%d",int_arr[i]);
+
+       }
+
+     putchar('\n'); 
+
+    bin_to_summation(int_arr,strlen(arr));
+
+}
+
+
+
+
+
+
+
+char* binary_equiv(int i)       //converts hex value to binary ,each time it is called
+
+                                //in a character array 
+
+{
+
+    char *arr;
+
+    arr = malloc(sizeof(char)*5);
+
+    int k =3;
+
+	arr[4]='\0';
+
+	while(k >= 0)
+
+	  {   if(i%2==0)
+
+	      arr[k] = '0';
+
+	      else
+
+	      arr[k] = '1';
+
+	      k--;
+
+	      i=i/2;
+
+	  }
+
+	  //printf("%s",arr);  //just for checking ex -- prints 1011 for i=11 in this function
+
+	                     // and i = 3 in main functiion
+
+	  return arr;
+
+	  
+
+}
+
+	
+
+void bin_to_summation(int arr[],int size)	
+
+ {
+
+ 
+
+ 
+
+ 	int i=0,l=0,k=0;
+
+	
+
+	int counter = 6;
+
+	int *summation_array;
+
+   int	a = size/6;
+
+	if(size%6 == 0)
+
+	 summation_array = malloc(sizeof(int)*(a));
+
+	else 
+
+	summation_array = malloc(sizeof(int)*(a+1));
+
+	int tmp[6];
+
+
+
+while(counter < (size))
+
+  {   k=0;
+
+      for( ;i<counter ;i++)
+
+       {
+
+           tmp[k]= arr[i];
+
+           k++;
+
+       }
+
+      
+
+      summation_array[l]=sum_(tmp);
+
+      
+
+      l++;
+
+      counter+=6;
+
+  }
+
+      
+
+  //handling last sextet
+
+
+
+  k=0;
+
+  int tmp2[6]={0};
+
+  for( ;i<size;i++)
+
+    {
+
+        tmp2[k]=arr[i];
+
+        k++;
+
+                                                                
+
+    }
+
+    
+
+  summation_array[l]=sum_(tmp2);
+
+  for(int i = 0;i<=l;i++)
+
+    {
+
+        printf("%d\n",summation_array[i]);         //prints summation of sextet stored in summation_array
+
+    }
+
+  char base64_alph[64]={'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e',
+
+	       'f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','/'};
+
+ 
+
+ 
+
+ for(int i = 0; i<=l;i++)
+
+  { for(int j =0;j<64;j++)
+
+      {
+
+      if(summation_array[i]==j)
+
+         {  
+
+             printf("%c",base64_alph[j]);
+
+             
+
+         }
+
+      }
+
+  }
+
+    
+
+ }
+
+ 
+
+ 
+
+ int sum_(int tmp[6])
+
+ {
+
+     int k=0,sum=0;
+
+      for(int j = 5; j>=0; j--)
+
+           {
+
+               sum += (tmp[j]*(int)pow(2,k));       
+
+               k++;
+
+           }
+
+     return sum;
+
+ }
+
+ 
